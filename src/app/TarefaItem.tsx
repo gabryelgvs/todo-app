@@ -21,7 +21,7 @@ type Tarefa = {
   prioridade: 'alta' | 'media' | 'baixa'
 }
 
-export function TarefaItem({ tarefa }: { tarefa: Tarefa }) {
+export function TarefaItem({ tarefa, corPrioridade }: { tarefa: Tarefa; corPrioridade?: string }) {
   const [concluidaOtimista, definirOtimista] = useOptimistic(tarefa.concluida)
   const [emAndamento, iniciarTransicao] = useTransition()
 
@@ -50,13 +50,20 @@ export function TarefaItem({ tarefa }: { tarefa: Tarefa }) {
       )}
 
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <span
-          className={`flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] text-[11px] transition ${
-            concluidaOtimista ? 'border-[#0a84ff] bg-[#0a84ff] text-white' : 'border-stone-300 text-transparent'
-          }`}
-        >
-          ✓
-        </span>
+        {corPrioridade ? (
+          <span
+            className="ml-[7px] h-[7px] w-[7px] shrink-0 rounded-full"
+            style={{ backgroundColor: corPrioridade }}
+          />
+        ) : (
+          <span
+            className={`flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] text-[11px] transition ${
+              concluidaOtimista ? 'border-[#0a84ff] bg-[#0a84ff] text-white' : 'border-stone-300 text-transparent'
+            }`}
+          >
+            ✓
+          </span>
+        )}
         <span
           className={`truncate text-[15px] transition ${
             concluidaOtimista ? 'text-stone-400 line-through' : 'text-stone-800'

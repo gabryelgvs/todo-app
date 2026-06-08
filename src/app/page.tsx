@@ -109,7 +109,7 @@ export default async function Home() {
 
       <div className="space-y-9">
         {NIVEIS.map((nivel) => {
-          const itens = tarefas.filter((t) => t.prioridade === nivel.chave)
+          const itens = tarefas.filter((t) => t.prioridade === nivel.chave && !t.concluida)
           if (itens.length === 0) return null
 
           return (
@@ -128,6 +128,31 @@ export default async function Home() {
             </section>
           )
         })}
+
+        {(() => {
+          const concluidas = tarefas.filter((t) => t.concluida)
+          if (concluidas.length === 0) return null
+
+          return (
+            <section className="animate-rise">
+              <div className="mb-3 flex items-center gap-2 px-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-stone-300" />
+                <h2 className="text-[13px] font-semibold uppercase tracking-wide text-stone-500">Concluídas</h2>
+                <span className="text-[12px] text-stone-400">{concluidas.length}</span>
+              </div>
+
+              <ul className="glass space-y-0 divide-y divide-stone-900/[0.05] overflow-hidden rounded-[24px] shadow-[0_16px_50px_-24px_rgba(15,23,42,0.2)] ring-1 ring-black/[0.04]">
+                {concluidas.map((tarefa) => (
+                  <TarefaItem
+                    key={tarefa.id}
+                    tarefa={tarefa}
+                    corPrioridade={NIVEIS.find((n) => n.chave === tarefa.prioridade)?.cor}
+                  />
+                ))}
+              </ul>
+            </section>
+          )
+        })()}
 
         {tarefas.length === 0 && (
           <p className="glass animate-rise rounded-[28px] py-14 text-center text-[15px] text-stone-400 ring-1 ring-black/[0.04]">
