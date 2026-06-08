@@ -39,14 +39,17 @@ export function TarefaItem({ tarefa }: { tarefa: Tarefa }) {
   }
 
   return (
-    <li className="group relative flex items-center justify-between gap-3 overflow-hidden px-4 py-3.5 transition hover:bg-white/60">
+    <li
+      onClick={alternar}
+      className="group relative flex cursor-pointer items-center justify-between gap-3 overflow-hidden px-4 py-3.5 transition hover:bg-[#0a84ff]/[0.06]"
+    >
       {emAndamento && (
         <span className="absolute inset-x-0 top-0 h-[2px] overflow-hidden bg-[#0a84ff]/10">
           <span className="block h-full w-1/3 animate-[carregando_0.9s_ease-in-out_infinite] rounded-full bg-[#0a84ff]" />
         </span>
       )}
 
-      <button onClick={alternar} className="press flex min-w-0 flex-1 items-center gap-3 text-left">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
         <span
           className={`flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] text-[11px] transition ${
             concluidaOtimista ? 'border-[#0a84ff] bg-[#0a84ff] text-white' : 'border-stone-300 text-transparent'
@@ -61,11 +64,14 @@ export function TarefaItem({ tarefa }: { tarefa: Tarefa }) {
         >
           {tarefa.titulo}
         </span>
-      </button>
+      </div>
 
       <button
-        onClick={apagar}
-        className="press shrink-0 rounded-full p-2 text-stone-300 opacity-0 transition group-hover:opacity-100 hover:bg-[#ff3b30]/10 hover:text-[#ff3b30]"
+        onClick={(evento) => {
+          evento.stopPropagation()
+          apagar()
+        }}
+        className="press shrink-0 rounded-full p-2 text-stone-300 opacity-60 transition group-hover:opacity-100 hover:bg-[#ff3b30]/10 hover:text-[#ff3b30]"
         aria-label="Apagar tarefa"
       >
         <IconeLixeira />
