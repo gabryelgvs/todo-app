@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { sair } from './login/actions'
-import { criarTarefa, alternarTarefa, apagarTarefa } from './actions'
+import { criarTarefa } from './actions'
+import { TarefaItem } from './TarefaItem'
 
 type Tarefa = {
   id: number
@@ -35,17 +36,6 @@ const NIVEIS = [
       'peer-checked:bg-[#34c759] peer-checked:text-white peer-checked:shadow-[0_6px_16px_-4px_rgba(52,199,89,0.5)]',
   },
 ] as const
-
-function IconeLixeira() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 7h16" />
-      <path d="M10 11v6M14 11v6" />
-      <path d="M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12" />
-      <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-    </svg>
-  )
-}
 
 export default async function Home() {
   const supabase = await createClient()
@@ -132,36 +122,7 @@ export default async function Home() {
 
               <ul className="glass space-y-0 divide-y divide-stone-900/[0.05] overflow-hidden rounded-[24px] shadow-[0_16px_50px_-24px_rgba(15,23,42,0.2)] ring-1 ring-black/[0.04]">
                 {itens.map((tarefa) => (
-                  <li key={tarefa.id} className="group flex items-center justify-between gap-3 px-4 py-3.5 transition hover:bg-white/60">
-                    <form action={alternarTarefa.bind(null, tarefa.id, tarefa.concluida)} className="min-w-0 flex-1">
-                      <button type="submit" className="press flex w-full items-center gap-3 text-left">
-                        <span
-                          className={`flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] text-[11px] transition ${
-                            tarefa.concluida ? 'border-[#0a84ff] bg-[#0a84ff] text-white' : 'border-stone-300 text-transparent'
-                          }`}
-                        >
-                          ✓
-                        </span>
-                        <span
-                          className={`truncate text-[15px] transition ${
-                            tarefa.concluida ? 'text-stone-400 line-through' : 'text-stone-800'
-                          }`}
-                        >
-                          {tarefa.titulo}
-                        </span>
-                      </button>
-                    </form>
-
-                    <form action={apagarTarefa.bind(null, tarefa.id)}>
-                      <button
-                        type="submit"
-                        className="press shrink-0 rounded-full p-2 text-stone-300 opacity-0 transition group-hover:opacity-100 hover:bg-[#ff3b30]/10 hover:text-[#ff3b30]"
-                        aria-label="Apagar tarefa"
-                      >
-                        <IconeLixeira />
-                      </button>
-                    </form>
-                  </li>
+                  <TarefaItem key={tarefa.id} tarefa={tarefa} />
                 ))}
               </ul>
             </section>
